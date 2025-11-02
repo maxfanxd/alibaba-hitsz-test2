@@ -1,0 +1,23 @@
+2025-10-22 05:04:44,890 INFO    MainThread:82557 [wandb_setup.py:_flush():81] Current SDK version is 0.22.2
+2025-10-22 05:04:44,890 INFO    MainThread:82557 [wandb_setup.py:_flush():81] Configure stats pid to 82557
+2025-10-22 05:04:44,893 INFO    MainThread:82557 [wandb_setup.py:_flush():81] Loading settings from /root/.config/wandb/settings
+2025-10-22 05:04:44,893 INFO    MainThread:82557 [wandb_setup.py:_flush():81] Loading settings from /workspace/alibaba-hitsz-test2/wandb/settings
+2025-10-22 05:04:44,893 INFO    MainThread:82557 [wandb_setup.py:_flush():81] Loading settings from environment variables
+2025-10-22 05:04:44,893 INFO    MainThread:82557 [wandb_init.py:setup_run_log_directory():705] Logging user logs to /workspace/alibaba-hitsz-test2/wandb/wandb/offline-run-20251022_050444-ggjdz20x/logs/debug.log
+2025-10-22 05:04:44,893 INFO    MainThread:82557 [wandb_init.py:setup_run_log_directory():706] Logging internal logs to /workspace/alibaba-hitsz-test2/wandb/wandb/offline-run-20251022_050444-ggjdz20x/logs/debug-internal.log
+2025-10-22 05:04:44,893 INFO    MainThread:82557 [wandb_init.py:init():832] calling init triggers
+2025-10-22 05:04:44,893 INFO    MainThread:82557 [wandb_init.py:init():837] wandb.init called with sweep_config: {}
+config: {'dataset_dir': 'datasets/CDrugRed-A-v1', 'model_path': 'models/qwen3-4b', 'output_dir': 'checkpoints/qwen3-4b-instruct-lora-20EP9E-5', 'batch_size': 8, 'grad_accum': 16, 'epochs': 20, 'lr': 9e-05, 'weight_decay': 0.01, 'world_size': 1, 'warmup_ratio': 0.1, 'lr_scheduler_type': 'cosine', 'optim': 'adamw_torch_fused', 'max_grad_norm': 1.0, 'max_length': 4096, '_wandb': {}}
+2025-10-22 05:04:44,895 INFO    MainThread:82557 [wandb_init.py:init():880] starting backend
+2025-10-22 05:04:45,103 INFO    MainThread:82557 [wandb_init.py:init():883] sending inform_init request
+2025-10-22 05:04:45,108 INFO    MainThread:82557 [wandb_init.py:init():891] backend started and connected
+2025-10-22 05:04:45,109 INFO    MainThread:82557 [wandb_init.py:init():961] updated telemetry
+2025-10-22 05:04:45,131 INFO    MainThread:82557 [wandb_init.py:init():985] communicating run to backend with 90.0 second timeout
+2025-10-22 05:04:45,256 INFO    MainThread:82557 [wandb_init.py:init():1036] starting run threads in backend
+2025-10-22 05:04:45,382 INFO    MainThread:82557 [wandb_run.py:_console_start():2509] atexit reg
+2025-10-22 05:04:45,382 INFO    MainThread:82557 [wandb_run.py:_redirect():2357] redirect: wrap_raw
+2025-10-22 05:04:45,382 INFO    MainThread:82557 [wandb_run.py:_redirect():2426] Wrapping output streams.
+2025-10-22 05:04:45,382 INFO    MainThread:82557 [wandb_run.py:_redirect():2449] Redirects installed.
+2025-10-22 05:04:45,384 INFO    MainThread:82557 [wandb_init.py:init():1076] run started, returning control to user process
+2025-10-22 05:04:49,221 INFO    wandb-AsyncioManager-main:82557 [service_client.py:_forward_responses():80] Reached EOF.
+2025-10-22 05:04:49,221 INFO    wandb-AsyncioManager-main:82557 [mailbox.py:close():137] Closing mailbox, abandoning 0 handles.

@@ -1,0 +1,93 @@
+2025-10-21 12:42:23,677 INFO    MainThread:879698 [wandb_setup.py:_flush():81] Current SDK version is 0.22.2
+2025-10-21 12:42:23,677 INFO    MainThread:879698 [wandb_setup.py:_flush():81] Configure stats pid to 879698
+2025-10-21 12:42:23,677 INFO    MainThread:879698 [wandb_setup.py:_flush():81] Loading settings from /root/.config/wandb/settings
+2025-10-21 12:42:23,677 INFO    MainThread:879698 [wandb_setup.py:_flush():81] Loading settings from /workspace/alibaba-hitsz-test2/wandb/settings
+2025-10-21 12:42:23,677 INFO    MainThread:879698 [wandb_setup.py:_flush():81] Loading settings from environment variables
+2025-10-21 12:42:23,678 INFO    MainThread:879698 [wandb_init.py:setup_run_log_directory():705] Logging user logs to /workspace/alibaba-hitsz-test2/wandb/wandb/offline-run-20251021_124223-z8rw1e7m/logs/debug.log
+2025-10-21 12:42:23,678 INFO    MainThread:879698 [wandb_init.py:setup_run_log_directory():706] Logging internal logs to /workspace/alibaba-hitsz-test2/wandb/wandb/offline-run-20251021_124223-z8rw1e7m/logs/debug-internal.log
+2025-10-21 12:42:23,678 INFO    MainThread:879698 [wandb_init.py:init():832] calling init triggers
+2025-10-21 12:42:23,678 INFO    MainThread:879698 [wandb_init.py:init():837] wandb.init called with sweep_config: {}
+config: {'dataset_dir': 'datasets/CDrugRed-A-v1', 'model_path': 'models/qwen2.5-7b-instruct', 'output_dir': 'checkpoints/qwen2.5-7b-instruct-lora-20EP7E-5', 'batch_size': 4, 'grad_accum': 10, 'epochs': 20, 'lr': 7e-05, 'weight_decay': 0.01, 'world_size': 1, 'warmup_ratio': 0.1, 'lr_scheduler_type': 'cosine', 'optim': 'adamw_torch_fused', 'max_grad_norm': 1.0, 'max_length': 3900, '_wandb': {}}
+2025-10-21 12:42:23,678 INFO    MainThread:879698 [wandb_init.py:init():880] starting backend
+2025-10-21 12:42:23,886 INFO    MainThread:879698 [wandb_init.py:init():883] sending inform_init request
+2025-10-21 12:42:23,894 INFO    MainThread:879698 [wandb_init.py:init():891] backend started and connected
+2025-10-21 12:42:23,895 INFO    MainThread:879698 [wandb_init.py:init():961] updated telemetry
+2025-10-21 12:42:23,910 INFO    MainThread:879698 [wandb_init.py:init():985] communicating run to backend with 90.0 second timeout
+2025-10-21 12:42:24,072 INFO    MainThread:879698 [wandb_init.py:init():1036] starting run threads in backend
+2025-10-21 12:42:24,226 INFO    MainThread:879698 [wandb_run.py:_console_start():2509] atexit reg
+2025-10-21 12:42:24,226 INFO    MainThread:879698 [wandb_run.py:_redirect():2357] redirect: wrap_raw
+2025-10-21 12:42:24,226 INFO    MainThread:879698 [wandb_run.py:_redirect():2426] Wrapping output streams.
+2025-10-21 12:42:24,226 INFO    MainThread:879698 [wandb_run.py:_redirect():2449] Redirects installed.
+2025-10-21 12:42:24,228 INFO    MainThread:879698 [wandb_init.py:init():1076] run started, returning control to user process
+2025-10-21 12:43:19,690 INFO    wandb-AsyncioManager-main:879698 [service_client.py:_forward_responses():80] Reached EOF.
+2025-10-21 12:43:19,690 INFO    wandb-AsyncioManager-main:879698 [mailbox.py:close():137] Closing mailbox, abandoning 0 handles.
+2025-10-21 12:43:19,703 ERROR   MainThread:879698 [redirect.py:_on_write():664] [all runs] error in stderr callback
+Traceback (most recent call last):
+  File "/opt/conda/envs/qwen/lib/python3.10/site-packages/wandb/sdk/lib/redirect.py", line 662, in _on_write
+    cb(written_data)
+  File "/opt/conda/envs/qwen/lib/python3.10/site-packages/wandb/sdk/wandb_run.py", line 2436, in <lambda>
+    lambda data: self._console_raw_callback("stderr", data),
+  File "/opt/conda/envs/qwen/lib/python3.10/site-packages/wandb/sdk/wandb_run.py", line 399, in wrapper
+    return func(self, *args, **kwargs)
+  File "/opt/conda/envs/qwen/lib/python3.10/site-packages/wandb/sdk/wandb_run.py", line 457, in wrapper_fn
+    return func(self, *args, **kwargs)
+  File "/opt/conda/envs/qwen/lib/python3.10/site-packages/wandb/sdk/wandb_run.py", line 1595, in _console_raw_callback
+    self._backend.interface.publish_output_raw(name, data)
+  File "/opt/conda/envs/qwen/lib/python3.10/site-packages/wandb/sdk/interface/interface.py", line 802, in publish_output_raw
+    self._publish_output_raw(o)
+  File "/opt/conda/envs/qwen/lib/python3.10/site-packages/wandb/sdk/interface/interface_shared.py", line 37, in _publish_output_raw
+    self._publish(rec)
+  File "/opt/conda/envs/qwen/lib/python3.10/site-packages/wandb/sdk/interface/interface_sock.py", line 43, in _publish
+    self._asyncer.run(lambda: self._client.publish(request))
+  File "/opt/conda/envs/qwen/lib/python3.10/site-packages/wandb/sdk/lib/asyncio_manager.py", line 136, in run
+    return future.result()
+  File "/opt/conda/envs/qwen/lib/python3.10/concurrent/futures/_base.py", line 458, in result
+    return self.__get_result()
+  File "/opt/conda/envs/qwen/lib/python3.10/concurrent/futures/_base.py", line 403, in __get_result
+    raise self._exception
+  File "/opt/conda/envs/qwen/lib/python3.10/site-packages/wandb/sdk/lib/asyncio_manager.py", line 219, in _wrap
+    return await fn()
+  File "/opt/conda/envs/qwen/lib/python3.10/site-packages/wandb/sdk/lib/service/service_client.py", line 38, in publish
+    await self._send_server_request(request)
+  File "/opt/conda/envs/qwen/lib/python3.10/site-packages/wandb/sdk/lib/service/service_client.py", line 64, in _send_server_request
+    await self._writer.drain()
+  File "/opt/conda/envs/qwen/lib/python3.10/asyncio/streams.py", line 371, in drain
+    await self._protocol._drain_helper()
+  File "/opt/conda/envs/qwen/lib/python3.10/asyncio/streams.py", line 167, in _drain_helper
+    raise ConnectionResetError('Connection lost')
+ConnectionResetError: Connection lost
+2025-10-21 12:43:19,706 ERROR   MainThread:879698 [redirect.py:_on_write():664] [all runs] error in stderr callback
+Traceback (most recent call last):
+  File "/opt/conda/envs/qwen/lib/python3.10/site-packages/wandb/sdk/lib/redirect.py", line 662, in _on_write
+    cb(written_data)
+  File "/opt/conda/envs/qwen/lib/python3.10/site-packages/wandb/sdk/wandb_run.py", line 2436, in <lambda>
+    lambda data: self._console_raw_callback("stderr", data),
+  File "/opt/conda/envs/qwen/lib/python3.10/site-packages/wandb/sdk/wandb_run.py", line 399, in wrapper
+    return func(self, *args, **kwargs)
+  File "/opt/conda/envs/qwen/lib/python3.10/site-packages/wandb/sdk/wandb_run.py", line 457, in wrapper_fn
+    return func(self, *args, **kwargs)
+  File "/opt/conda/envs/qwen/lib/python3.10/site-packages/wandb/sdk/wandb_run.py", line 1595, in _console_raw_callback
+    self._backend.interface.publish_output_raw(name, data)
+  File "/opt/conda/envs/qwen/lib/python3.10/site-packages/wandb/sdk/interface/interface.py", line 802, in publish_output_raw
+    self._publish_output_raw(o)
+  File "/opt/conda/envs/qwen/lib/python3.10/site-packages/wandb/sdk/interface/interface_shared.py", line 37, in _publish_output_raw
+    self._publish(rec)
+  File "/opt/conda/envs/qwen/lib/python3.10/site-packages/wandb/sdk/interface/interface_sock.py", line 43, in _publish
+    self._asyncer.run(lambda: self._client.publish(request))
+  File "/opt/conda/envs/qwen/lib/python3.10/site-packages/wandb/sdk/lib/asyncio_manager.py", line 136, in run
+    return future.result()
+  File "/opt/conda/envs/qwen/lib/python3.10/concurrent/futures/_base.py", line 458, in result
+    return self.__get_result()
+  File "/opt/conda/envs/qwen/lib/python3.10/concurrent/futures/_base.py", line 403, in __get_result
+    raise self._exception
+  File "/opt/conda/envs/qwen/lib/python3.10/site-packages/wandb/sdk/lib/asyncio_manager.py", line 219, in _wrap
+    return await fn()
+  File "/opt/conda/envs/qwen/lib/python3.10/site-packages/wandb/sdk/lib/service/service_client.py", line 38, in publish
+    await self._send_server_request(request)
+  File "/opt/conda/envs/qwen/lib/python3.10/site-packages/wandb/sdk/lib/service/service_client.py", line 64, in _send_server_request
+    await self._writer.drain()
+  File "/opt/conda/envs/qwen/lib/python3.10/asyncio/streams.py", line 371, in drain
+    await self._protocol._drain_helper()
+  File "/opt/conda/envs/qwen/lib/python3.10/asyncio/streams.py", line 167, in _drain_helper
+    raise ConnectionResetError('Connection lost')
+ConnectionResetError: Connection lost

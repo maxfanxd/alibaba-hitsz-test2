@@ -1,0 +1,32 @@
+Generating train split: 3494 examples [00:00, 64205.75 examples/s]
+The `load_in_4bit` and `load_in_8bit` arguments are deprecated and will be removed in the future versions. Please, pass a `BitsAndBytesConfig` object in `quantization_config` argument instead.
+Loading checkpoint shards: 100%|████████████████████████████| 4/4 [00:03<00:00,  1.27it/s]
+Map: 100%|█████████████████████████████████████| 3494/3494 [00:41<00:00, 83.63 examples/s]
+Using 4-bit quantization via bitsandbytes for model loading.
+Train samples: 3494 | Total steps (approx): 132
+Single-process training detected: disabling DDP (ddp_backend=no).
+  0%|                                                             | 0/129 [00:00<?, ?it/s]/opt/conda/envs/qwen/lib/python3.10/site-packages/torch/_dynamo/eval_frame.py:1044: UserWarning: torch.utils.checkpoint: the use_reentrant parameter should be passed explicitly. Starting in PyTorch 2.9, calling checkpoint without use_reentrant will raise an exception. use_reentrant=False is recommended, but if you need to preserve the current default behavior, you can pass use_reentrant=True. Refer to docs for more details on the differences between the two variants.
+  return fn(*args, **kwargs)
+ 78%|█████████████████████████████████████▉           | 100/129 [1:32:00<26:42, 55.25s/it]/opt/conda/envs/qwen/lib/python3.10/site-packages/peft/utils/save_and_load.py:195: UserWarning: Could not find a config file in models/qwen2.5-7b-instruct - will assume that the vocabulary was not modified.
+  warnings.warn(
+/opt/conda/envs/qwen/lib/python3.10/site-packages/torch/_dynamo/eval_frame.py:1044: UserWarning: torch.utils.checkpoint: the use_reentrant parameter should be passed explicitly. Starting in PyTorch 2.9, calling checkpoint without use_reentrant will raise an exception. use_reentrant=False is recommended, but if you need to preserve the current default behavior, you can pass use_reentrant=True. Refer to docs for more details on the differences between the two variants.
+  return fn(*args, **kwargs)
+100%|█████████████████████████████████████████████████| 129/129 [1:58:50<00:00, 55.33s/it]/opt/conda/envs/qwen/lib/python3.10/site-packages/peft/utils/save_and_load.py:195: UserWarning: Could not find a config file in models/qwen2.5-7b-instruct - will assume that the vocabulary was not modified.
+  warnings.warn(
+100%|█████████████████████████████████████████████████| 129/129 [1:58:51<00:00, 55.28s/it]
+/opt/conda/envs/qwen/lib/python3.10/site-packages/peft/utils/save_and_load.py:195: UserWarning: Could not find a config file in models/qwen2.5-7b-instruct - will assume that the vocabulary was not modified.
+  warnings.warn(
+{'loss': 6093.1305, 'grad_norm': 1.9655016660690308, 'learning_rate': 6.45736434108527e-05, 'epoch': 0.23}
+{'loss': 67.3717, 'grad_norm': 4.46047830581665, 'learning_rate': 5.914728682170542e-05, 'epoch': 0.46}
+{'loss': 3324.4941, 'grad_norm': 1.7408156394958496, 'learning_rate': 5.372093023255814e-05, 'epoch': 0.69}
+{'loss': 29.8516, 'grad_norm': 2.5694212913513184, 'learning_rate': 4.829457364341085e-05, 'epoch': 0.91}
+{'loss': 226.9903, 'grad_norm': 1.9236247539520264, 'learning_rate': 4.2868217054263564e-05, 'epoch': 1.14}
+{'loss': 59.676, 'grad_norm': 1.5075420141220093, 'learning_rate': 3.744186046511627e-05, 'epoch': 1.37}
+{'loss': 55.5733, 'grad_norm': 1.5550422668457031, 'learning_rate': 3.201550387596899e-05, 'epoch': 1.6}
+{'loss': 60.7293, 'grad_norm': 4.142632484436035, 'learning_rate': 2.6589147286821705e-05, 'epoch': 1.83}
+{'loss': 36.1293, 'grad_norm': 1.876287817955017, 'learning_rate': 2.1162790697674414e-05, 'epoch': 2.06}
+{'loss': 1585.6935, 'grad_norm': 2.3653433322906494, 'learning_rate': 1.573643410852713e-05, 'epoch': 2.29}
+{'loss': 16.9974, 'grad_norm': 2.568784236907959, 'learning_rate': 1.0310077519379844e-05, 'epoch': 2.51}
+{'loss': 26.0502, 'grad_norm': 0.9151020646095276, 'learning_rate': 4.883720930232558e-06, 'epoch': 2.74}
+{'train_runtime': 7131.3884, 'train_samples_per_second': 1.47, 'train_steps_per_second': 0.018, 'train_loss': 904.5632328950157, 'epoch': 2.95}
+LoRA training complete. Weights saved to: checkpoints/qwen2.5-7b-instruct-lora-fixed

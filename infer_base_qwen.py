@@ -6,6 +6,7 @@ from typing import List, Dict, Any, Optional
 
 import torch
 from transformers import AutoTokenizer, AutoModelForCausalLM
+from rag_utils import load_kb_cache, build_kb_cache_from_jsonl, retrieve_context_for_record
 
 # Enforce offline
 os.environ.setdefault("HF_HUB_OFFLINE", "1")
@@ -64,14 +65,17 @@ def build_record_text(rec: Dict[str, Any]) -> str:
     return '\n'.join([p for p in parts if p])
 
 
-def build_prompt(instruction: str, record_text: str) -> str:
+def build_prompt(instruction: str, record_text: str, retrieved_context: str = "") -> str:
     system_prompt = (
         "你是临床用药助手。根据患者病历信息和出院诊断，从候选药物列表中给出合理的出院带药列表。"
         "只输出药物名称列表，使用中文逗号分隔。"
     )
+    user_block = f"{instruction}\n{record_text}"
+    if retrieved_context:
+        user_block += f"\n\n{retrieved_context}"
     return (
         f"<|im_start|>system\n{system_prompt}<|im_end|>\n"
-        f"<|im_start|>user\n{instruction}\n{record_text}<|im_end|>\n"
+        f"<|im_start|>user\n{user_block}<|im_end|>\n"
         f"<|im_start|>assistant\n"
     )
 
@@ -112,11 +116,22 @@ def main():
     parser.add_argument('--max_new_tokens', default=128, type=int)
     parser.add_argument('--temperature', default=0.7, type=float)
     parser.add_argument('--top_p', default=0.9, type=float)
+    parser.add_argument('--min_new_tokens', default=1, type=int)
+    parser.add_argument('--do_sample', dest='do_sample', action='store_true', help='启用随机采样')
+    parser.add_argument('--no_do_sample', dest='do_sample', action='store_false', help='禁用随机采样')
+    parser.add_argument('--num_beams', default=1, type=int)
+    parser.add_argument('--repetition_penalty', default=1.0, type=float)
     parser.add_argument('--max_items', default=20, type=int)
     parser.add_argument('--log_every', default=5, type=int, help='每处理多少条打印一次进度')
     parser.add_argument('--progress', dest='progress', action='store_true', help='显示推理进度')
     parser.add_argument('--no_progress', dest='progress', action='store_false', help='不显示推理进度')
-    parser.set_defaults(progress=True)
+    # RAG options
+    parser.add_argument('--rag', dest='rag', action='store_true', help='启用RAG检索增强')
+    parser.add_argument('--no_rag', dest='rag', action='store_false', help='禁用RAG检索增强')
+    parser.add_argument('--kb_path', default='none', type=str, help='KB缓存(json)或原始jsonl路径')
+    parser.add_argument('--rag_top_k', default=3, type=int, help='检索返回的参考案例数量')
+    parser.add_argument('--rag_min_jaccard', default=0.08, type=float, help='检索最小Jaccard阈值')
+    parser.set_defaults(progress=True, rag=False, do_sample=False)
     args = parser.parse_args()
 
     # Read data
@@ -127,6 +142,29 @@ def main():
     else:
         candidates = read_candidate_list(args.candidate_path)
 
+    # Load KB for RAG if enabled
+    kb_entries = None
+    if args.rag:
+        kb_p = str(args.kb_path or '').strip().lower()
+        if kb_p in ('', 'none', 'null'):
+            print('RAG启用但未提供kb_path，自动禁用RAG。')
+            args.rag = False
+        else:
+            try:
+                if args.kb_path.endswith('.jsonl'):
+                    kb_entries = build_kb_cache_from_jsonl(args.kb_path)
+                else:
+                    kb_entries = load_kb_cache(args.kb_path)
+                print(f'KB加载完成：{len(kb_entries)} 条目')
+            except Exception as e:
+                print(f'加载KB失败：{e}; 尝试从JSONL构建...')
+                try:
+                    kb_entries = build_kb_cache_from_jsonl(args.kb_path)
+                    print(f'KB构建完成：{len(kb_entries)} 条目')
+                except Exception as e2:
+                    print(f'KB构建失败：{e2}；RAG将被禁用。')
+                    args.rag = False
+
     # Tokenizer & Base model
     tokenizer = AutoTokenizer.from_pretrained(
         args.model_path,
@@ -134,6 +172,12 @@ def main():
         trust_remote_code=True,
         local_files_only=True,
     )
+    # 统一 pad/eos 以避免空输出和截断异常
+    if tokenizer.pad_token_id is None:
+        tokenizer.pad_token = tokenizer.eos_token or tokenizer.sep_token or tokenizer.unk_token
+    # 再次防御：确保 pad/eos id 可用
+    pad_id = tokenizer.pad_token_id if tokenizer.pad_token_id is not None else tokenizer.eos_token_id
+    eos_id = tokenizer.eos_token_id if tokenizer.eos_token_id is not None else pad_id
 
     load_kwargs = dict(
         device_map='auto',
@@ -168,7 +212,16 @@ def main():
 
     for i, rec in enumerate(data):
         record_text = build_record_text(rec)
-        prompt = build_prompt(instruction, record_text)
+        retrieved_context = ""
+        if args.rag and kb_entries:
+            ctx, _meta = retrieve_context_for_record(
+                rec,
+                kb_entries,
+                top_k=args.rag_top_k,
+                min_jaccard=args.rag_min_jaccard,
+            )
+            retrieved_context = ctx
+        prompt = build_prompt(instruction, record_text, retrieved_context)
         inputs = tokenizer([prompt], return_tensors='pt')
         if use_cuda:
             inputs = inputs.to('cuda')
@@ -177,9 +230,14 @@ def main():
             gen = model.generate(
                 **inputs,
                 max_new_tokens=args.max_new_tokens,
-                do_sample=True,
+                min_new_tokens=args.min_new_tokens,
+                do_sample=args.do_sample,
+                num_beams=args.num_beams,
+                repetition_penalty=args.repetition_penalty,
                 temperature=args.temperature,
                 top_p=args.top_p,
+                pad_token_id=pad_id,
+                eos_token_id=eos_id,
             )
 
         # Decode only the generated tokens (exclude the prompt)

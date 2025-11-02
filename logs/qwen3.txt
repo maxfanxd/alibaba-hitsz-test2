@@ -1,0 +1,32 @@
+/opt/conda/envs/qwen/lib/python3.10/site-packages/pydantic/_internal/_generate_schema.py:2249: UnsupportedFieldAttributeWarning: The 'repr' attribute with value False was provided to the `Field()` function, which has no effect in the context it was used. 'repr' is field-specific metadata, and can only be attached to a model field using `Annotated` metadata or by assignment. This may have happened because an `Annotated` type alias using the `type` statement was used, or if the `Field()` function was attached to a single member of a union type.
+  warnings.warn(
+/opt/conda/envs/qwen/lib/python3.10/site-packages/pydantic/_internal/_generate_schema.py:2249: UnsupportedFieldAttributeWarning: The 'frozen' attribute with value True was provided to the `Field()` function, which has no effect in the context it was used. 'frozen' is field-specific metadata, and can only be attached to a model field using `Annotated` metadata or by assignment. This may have happened because an `Annotated` type alias using the `type` statement was used, or if the `Field()` function was attached to a single member of a union type.
+  warnings.warn(
+wandb: Tracking run with wandb version 0.22.2
+wandb: W&B syncing is set to `offline` in this directory. Run `wandb online` or set WANDB_MODE=online to enable cloud syncing.
+wandb: Run data is saved locally in /workspace/alibaba-hitsz-test2/wandb/wandb/offline-run-20251022_050444-ggjdz20x
+Generating train split: 0 examples [00:00, ? examples/s]Generating train split: 3602 examples [00:00, 56551.21 examples/s]
+Using 4-bit quantization via bitsandbytes for model loading.
+Traceback (most recent call last):
+  File "/opt/conda/envs/qwen/lib/python3.10/site-packages/transformers/models/auto/configuration_auto.py", line 993, in from_pretrained
+    config_class = CONFIG_MAPPING[config_dict["model_type"]]
+  File "/opt/conda/envs/qwen/lib/python3.10/site-packages/transformers/models/auto/configuration_auto.py", line 695, in __getitem__
+    raise KeyError(key)
+KeyError: 'qwen3'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/workspace/alibaba-hitsz-test2/train_lora_qwen.py", line 375, in <module>
+    main()
+  File "/workspace/alibaba-hitsz-test2/train_lora_qwen.py", line 243, in main
+    model = AutoModelForCausalLM.from_pretrained(
+  File "/opt/conda/envs/qwen/lib/python3.10/site-packages/transformers/models/auto/auto_factory.py", line 524, in from_pretrained
+    config, kwargs = AutoConfig.from_pretrained(
+  File "/opt/conda/envs/qwen/lib/python3.10/site-packages/transformers/models/auto/configuration_auto.py", line 995, in from_pretrained
+    raise ValueError(
+ValueError: The checkpoint you are trying to load has model type `qwen3` but Transformers does not recognize this architecture. This could be because of an issue with the checkpoint, or because your version of Transformers is out of date.
+[1;34mwandb[0m: 
+[1;34mwandb[0m: You can sync this run to the cloud by running:
+[1;34mwandb[0m: [1mwandb sync /workspace/alibaba-hitsz-test2/wandb/wandb/offline-run-20251022_050444-ggjdz20x[0m
+[1;34mwandb[0m: Find logs at: [1;35mwandb/wandb/offline-run-20251022_050444-ggjdz20x/logs[0m

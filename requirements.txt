@@ -8,3 +8,7 @@ streamlit==1.24.0
 # 兼容性优先：使用 PyTorch DDP，无需 DeepSpeed
 # 可选：4-bit 量化（仅 Linux，且需合适 CUDA），未安装将自动回退到 bf16
 bitsandbytes>=0.42.0; platform_system=="Linux"
+wandb>=0.15.0
+# 向量语义检索依赖（离线友好）：
+faiss-cpu>=1.7.4
+sentence-transformers>=3.0.0
